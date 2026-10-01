@@ -8,6 +8,7 @@ import Card from "../components/Card";
 import TextField from "../components/TextField";
 import Button from "../components/Button";
 import ConfirmDialog from "../components/ConfirmDialog";
+import SideMenu from "../components/SideMenu";
 import useAsync from "../hooks/useAsync";
 import useSubmit from "../hooks/useSubmit";
 import { deleteUser, getUser, updateUser } from "../api/users";
@@ -28,6 +29,14 @@ export default function ProfileScreen({ navigation }) {
   const [nameError, setNameError] = useState(null);
   const [saved, setSaved] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Sidebar buttons opened from the hamburger icon. Add more entries here.
+  const menuItems = [
+    { title: "Map", icon: "map-marker-outline", onPress: () => navigation.navigate(ROUTES.MAP) },
+    { title: "Buildings", icon: "office-building-outline", onPress: () => navigation.navigate(ROUTES.BUILDINGS_TAB) },
+    { title: "News & events", icon: "newspaper-variant-outline", onPress: () => navigation.navigate(ROUTES.NEWS_TAB) },
+  ];
 
   // Editing keeps the account's username and password as they were created.
   const save = useSubmit(
@@ -69,7 +78,11 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <Screen scroll>
-      <ScreenHeader title={userId ? "Your profile" : "Profile"} showBack={false} />
+      <ScreenHeader
+        title={userId ? "Your profile" : "Profile"}
+        showBack={false}
+        right={<Button icon="menu" variant="ghost" accessibilityLabel="Open menu" onPress={() => setMenuOpen(true)} />}
+      />
       <View style={styles.avatar}>
         <MaterialCommunityIcons name="account-circle" size={sizes.avatar} color={colors.primary} />
       </View>
@@ -127,6 +140,8 @@ export default function ProfileScreen({ navigation }) {
           </>
         )}
       </Card>
+
+      <SideMenu visible={menuOpen} onClose={() => setMenuOpen(false)} items={menuItems} />
 
       <ConfirmDialog
         visible={confirming}
