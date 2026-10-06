@@ -36,6 +36,7 @@ export default function ProfileScreen({ navigation }) {
     { title: "Map", icon: "map-marker-outline", onPress: () => navigation.navigate(ROUTES.MAP) },
     { title: "Buildings", icon: "office-building-outline", onPress: () => navigation.navigate(ROUTES.BUILDINGS_TAB) },
     { title: "News & events", icon: "newspaper-variant-outline", onPress: () => navigation.navigate(ROUTES.NEWS_TAB) },
+    { title: "Roommates", icon: "account-group-outline", onPress: () => navigation.navigate(ROUTES.ROOMMATES_TAB) },
   ];
 
   // Editing keeps the account's username and password as they were created.
