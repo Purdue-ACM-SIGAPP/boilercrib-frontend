@@ -13,6 +13,9 @@ import BuildingDetailScreen from "../screens/BuildingDetail";
 import NewsAndEventsScreen from "../screens/NewsAndEvents";
 import EventDetailScreen from "../screens/EventDetail";
 import EventFormScreen from "../screens/EventForm";
+import RoommateListScreen from "../screens/RoommateList";
+import RoommateDetailScreen from "../screens/RoommateDetail";
+import RoommateFormScreen from "../screens/RoommateForm";
 import ProfileScreen from "../screens/Profile";
 import NotFoundScreen from "../screens/NotFound";
 import { colors, sizes } from "../theme";
@@ -21,6 +24,7 @@ const Root = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 const NewsStack = createStackNavigator();
 const BuildingsStack = createStackNavigator();
+const RoommatesStack = createStackNavigator();
 
 const stackOptions = { headerShown: false };
 
@@ -43,10 +47,21 @@ function BuildingsTab() {
   );
 }
 
+function RoommatesTab() {
+  return (
+    <RoommatesStack.Navigator screenOptions={stackOptions}>
+      <RoommatesStack.Screen name={ROUTES.ROOMMATE_LIST} component={RoommateListScreen} options={{ title: "Roommates" }} />
+      <RoommatesStack.Screen name={ROUTES.ROOMMATE_FORM} component={RoommateFormScreen} options={{ title: "Roommate bio" }} />
+      <RoommatesStack.Screen name={ROUTES.ROOMMATE_DETAIL} component={RoommateDetailScreen} options={{ title: "Roommate" }} />
+    </RoommatesStack.Navigator>
+  );
+}
+
 const TAB_ICONS = {
   [ROUTES.NEWS_TAB]: "newspaper-variant-outline",
   [ROUTES.MAP]: "map-marker-outline",
   [ROUTES.BUILDINGS_TAB]: "office-building-outline",
+  [ROUTES.ROOMMATES_TAB]: "account-group-outline",
   [ROUTES.PROFILE]: "account-circle-outline",
 };
 
@@ -66,13 +81,14 @@ function MainTabs() {
       <Tabs.Screen name={ROUTES.NEWS_TAB} component={NewsTab} options={{ title: "News" }} />
       <Tabs.Screen name={ROUTES.MAP} component={MapScreen} options={{ title: "Map" }} />
       <Tabs.Screen name={ROUTES.BUILDINGS_TAB} component={BuildingsTab} options={{ title: "Buildings" }} />
+      <Tabs.Screen name={ROUTES.ROOMMATES_TAB} component={RoommatesTab} options={{ title: "Roommates" }} />
       <Tabs.Screen name={ROUTES.PROFILE} component={ProfileScreen} options={{ title: "Profile" }} />
     </Tabs.Navigator>
   );
 }
 
-// The welcome screen is the app's root; `events/edit` is listed before `events/:id`
-// so the form isn't parsed as an event id.
+// The welcome screen is the app's root; `events/edit` and `roommates/edit` are listed before
+// the `:id` routes so the forms aren't parsed as ids.
 const linking = {
   prefixes: [],
   config: {
@@ -92,6 +108,13 @@ const linking = {
             screens: {
               [ROUTES.BUILDING_LIST]: "buildings",
               [ROUTES.BUILDING_DETAIL]: "buildings/:id",
+            },
+          },
+          [ROUTES.ROOMMATES_TAB]: {
+            screens: {
+              [ROUTES.ROOMMATE_LIST]: "roommates",
+              [ROUTES.ROOMMATE_FORM]: "roommates/edit",
+              [ROUTES.ROOMMATE_DETAIL]: "roommates/:id",
             },
           },
           [ROUTES.PROFILE]: "profile",
