@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, Pressable, Text, View, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Card from "./Card";
 import Button from "./Button";
@@ -8,7 +8,8 @@ import { buildingLabel, formatRating, imageUri } from "../utils/format";
 import { colors, sizes, fontWeights, radii, spacing, textStyles } from "../theme";
 
 // `rating`: 1–10 average, null when unrated, undefined while loading.
-export default function BuildingCard({ building, rating, onPress, onDirections }) {
+// The heart only shows when `onToggleFavorite` is passed.
+export default function BuildingCard({ building, rating, onPress, onDirections, favorite = false, onToggleFavorite }) {
   const uri = imageUri(building.image);
   const hasLocation = building.latitude != null && building.longitude != null;
 
@@ -30,6 +31,17 @@ export default function BuildingCard({ building, rating, onPress, onDirections }
             <Text style={styles.ratingText}>{rating === undefined ? "Loading rating…" : formatRating(rating)}</Text>
           </View>
         </View>
+        {onToggleFavorite ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={favorite ? "Remove from favorites" : "Add to favorites"}
+            accessibilityState={{ selected: favorite }}
+            hitSlop={spacing.sm}
+            onPress={onToggleFavorite}
+          >
+            <MaterialCommunityIcons name={favorite ? "heart" : "heart-outline"} size={sizes.iconMd} color={colors.primary} />
+          </Pressable>
+        ) : null}
       </View>
       {onDirections ? (
         <Button
