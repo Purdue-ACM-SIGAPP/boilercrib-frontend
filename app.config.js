@@ -1,4 +1,3 @@
-import "expo-env";
 import { withBuildProperties } from "expo-build-properties";
 
 export default {
