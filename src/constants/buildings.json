@@ -6267,6 +6267,71 @@
                     "longitude": -86.92769356550737
                 }
             ]
+        },
+        {
+            "buildingID": "b3bfe5042cdbd04fbd025b0f",
+            "coordinates": [
+                {
+                    "latitude": 40.4258721,
+                    "longitude": -86.9272943
+                },
+                {
+                    "latitude": 40.4258003,
+                    "longitude": -86.9271874
+                },
+                {
+                    "latitude": 40.4259021,
+                    "longitude": -86.9270383
+                },
+                {
+                    "latitude": 40.42591,
+                    "longitude": -86.9265589
+                },
+                {
+                    "latitude": 40.4257882,
+                    "longitude": -86.9265573
+                },
+                {
+                    "latitude": 40.4257826,
+                    "longitude": -86.9259807
+                },
+                {
+                    "latitude": 40.4259143,
+                    "longitude": -86.9259779
+                },
+                {
+                    "latitude": 40.4259154,
+                    "longitude": -86.9263625
+                },
+                {
+                    "latitude": 40.4260245,
+                    "longitude": -86.9263609
+                },
+                {
+                    "latitude": 40.4260235,
+                    "longitude": -86.9266696
+                },
+                {
+                    "latitude": 40.4262843,
+                    "longitude": -86.9266917
+                },
+                {
+                    "latitude": 40.4261902,
+                    "longitude": -86.9268475
+                },
+                {
+                    "latitude": 40.4260228,
+                    "longitude": -86.9268378
+                },
+                {
+                    "latitude": 40.4260258,
+                    "longitude": -86.9270832
+                },
+                {
+                    "latitude": 40.4258721,
+                    "longitude": -86.9272943
+                }
+            ]
         }
     ]
 }
