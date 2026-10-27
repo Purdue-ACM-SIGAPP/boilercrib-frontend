@@ -12,6 +12,7 @@ export const updateReview = (review) => client.put("Review", review);
 export const deleteReview = (id) => client.delete(`Review/${id}`);
 
 export const getBuildingReviews = (buildingId) => client.get(`Review/building/${buildingId}`);
+export const getUserReviews = (userId) => client.get(`Review/user/${userId}`);
 export const deleteBuildingReviews = (buildingId) => client.delete(`Review/building/${buildingId}`);
 
 // Resolves to the average rating (1–10), or null when the building has no reviews.

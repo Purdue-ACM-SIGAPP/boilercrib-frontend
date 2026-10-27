@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Pressable, Text, View, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import ScreenHeader from "../components/ScreenHeader";
@@ -9,10 +9,15 @@ import TextField from "../components/TextField";
 import Button from "../components/Button";
 import ConfirmDialog from "../components/ConfirmDialog";
 import SideMenu from "../components/SideMenu";
+import ReviewCard from "../components/ReviewCard";
 import useAsync from "../hooks/useAsync";
 import useSubmit from "../hooks/useSubmit";
+import useRefetchOnFocus from "../hooks/useRefetchOnFocus";
 import { deleteUser, getUser, updateUser } from "../api/users";
+import { getUserReviews } from "../api/reviews";
+import { getBuildings } from "../api/buildings";
 import { useSession } from "../context/SessionContext";
+import { buildingLabel } from "../utils/format";
 import ROUTES from "../navigation/routes";
 import { colors, sizes, fontWeights, spacing, textStyles } from "../theme";
 
@@ -24,6 +29,14 @@ const toForm = (user) => ({
 export default function ProfileScreen({ navigation }) {
   const { userId, signOut } = useSession();
   const user = useAsync(() => (userId ? getUser(userId) : Promise.resolve(null)), [userId]);
+  const reviews = useAsync(() => (userId ? getUserReviews(userId) : Promise.resolve([])), [userId]);
+  const buildings = useAsync(() => getBuildings(), []);
+  useRefetchOnFocus(reviews.refetch);
+
+  const buildingNames = useMemo(
+    () => Object.fromEntries((buildings.data ?? []).map((b) => [b.id, buildingLabel(b)])),
+    [buildings.data]
+  );
 
   const [form, setForm] = useState(toForm());
   const [nameError, setNameError] = useState(null);
@@ -67,6 +80,10 @@ export default function ProfileScreen({ navigation }) {
     setSaved(true);
     user.setData(result);
   };
+
+  // The building screen lives in the Buildings tab; `initial: false` keeps the list underneath for Back.
+  const openBuilding = (id) =>
+    navigation.navigate(ROUTES.BUILDINGS_TAB, { screen: ROUTES.BUILDING_DETAIL, params: { id }, initial: false });
 
   const handleDelete = async () => {
     if (await remove.submit(userId)) {
@@ -118,6 +135,31 @@ export default function ProfileScreen({ navigation }) {
         </AsyncView>
       ) : null}
 
+      {userId ? (
+        <>
+          <Text style={styles.sectionTitle}>Your reviews</Text>
+          <AsyncView
+            state={reviews}
+            loadingMessage="Loading your reviews…"
+            emptyMessage="You haven't reviewed any housing yet."
+            emptyIcon="comment-outline"
+          >
+            {(list) =>
+              list.map((review) => (
+                <View key={review.id}>
+                  <Pressable accessibilityRole="link" onPress={() => openBuilding(review.buildingId)} style={styles.buildingLink}>
+                    <MaterialCommunityIcons name="office-building-outline" size={sizes.iconSm} color={colors.primary} />
+                    <Text style={styles.buildingName}>{buildingNames[review.buildingId] || "Building"}</Text>
+                    <MaterialCommunityIcons name="chevron-right" size={sizes.iconSm} color={colors.textMuted} />
+                  </Pressable>
+                  <ReviewCard review={review} />
+                </View>
+              ))
+            }
+          </AsyncView>
+        </>
+      ) : null}
+
       <Text style={styles.sectionTitle}>Sign-in</Text>
       <Card variant="secondary">
         {userId ? (
@@ -166,6 +208,8 @@ const styles = StyleSheet.create({
   sectionTitle: { ...textStyles.heading, color: colors.primary, marginTop: spacing.lg, marginBottom: spacing.sm },
   body: { ...textStyles.body, color: colors.text },
   meta: { ...textStyles.caption, color: colors.textMuted, marginTop: spacing.xs },
+  buildingLink: { flexDirection: "row", alignItems: "center", gap: spacing.xs, marginBottom: spacing.xs },
+  buildingName: { ...textStyles.subheading, color: colors.primary, flexShrink: 1 },
   cardButton: { marginTop: spacing.md },
   cardButtons: { flexDirection: "row", gap: spacing.sm, marginTop: spacing.md },
 });
