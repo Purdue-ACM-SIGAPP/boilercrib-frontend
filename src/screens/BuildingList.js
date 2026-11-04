@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { FlatList, Text, View, StyleSheet } from "react-native";
 import Screen from "../components/Screen";
 import ScreenHeader from "../components/ScreenHeader";
