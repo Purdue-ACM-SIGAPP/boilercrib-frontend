@@ -16,6 +16,7 @@ import EventFormScreen from "../screens/EventForm";
 import ProfileScreen from "../screens/Profile";
 import NotFoundScreen from "../screens/NotFound";
 import { colors, sizes } from "../theme";
+import HouseDetails from "../components/HouseDetails.js";
 
 const Root = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -39,6 +40,7 @@ function BuildingsTab() {
     <BuildingsStack.Navigator screenOptions={stackOptions}>
       <BuildingsStack.Screen name={ROUTES.BUILDING_LIST} component={BuildingListScreen} options={{ title: "Buildings" }} />
       <BuildingsStack.Screen name={ROUTES.BUILDING_DETAIL} component={BuildingDetailScreen} options={{ title: "Building" }} />
+      <BuildingsStack.Screen name="HouseDetails" component={HouseDetails} options={{ title: "House" }} />
     </BuildingsStack.Navigator>
   );
 }

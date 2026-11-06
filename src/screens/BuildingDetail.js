@@ -20,6 +20,7 @@ import { CAMPUS_CENTER } from "../constants/campus";
 import { buildingLabel, formatRating, imageUri } from "../utils/format";
 import ROUTES from "../navigation/routes";
 import { colors, sizes, radii, spacing, textStyles } from "../theme";
+import HouseDetails from "../components/HouseDetails.js"
 
 const byNewest = (a, b) => new Date(b.createdAt ?? 0) - new Date(a.createdAt ?? 0);
 
@@ -122,6 +123,11 @@ export default function BuildingDetailScreen({ navigation, route }) {
                 style={styles.mapButton}
                 disabled={b.latitude == null || b.longitude == null}
                 onPress={() => navigation.navigate(ROUTES.MAP, { latitude: b.latitude, longitude: b.longitude })}
+              />
+              <Button
+                title="Housing Details"
+                icon="empty_star.jpg"
+                onPress={() => navigation.navigate("HouseDetails", {id: item.id})}
               />
             </Card>
 
